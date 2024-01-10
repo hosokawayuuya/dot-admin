@@ -1,6 +1,6 @@
 <?php session_start(); ?>
-<?php require 'header.php'; ?>
-<?php require 'menu.php'; ?>
+<?php require '../others/header.php'; ?>
+<?php require '../others/menu.php'; ?>
 <?php
 if(isset($_SESSION['customer'])){
     unset($_SESSION['customer']);
@@ -9,4 +9,4 @@ if(isset($_SESSION['customer'])){
     echo 'すでにログアウトしています。';
 }
 ?>
-<?php require 'footer.php'; ?>
+<?php require '../others/footer.php'; ?>
