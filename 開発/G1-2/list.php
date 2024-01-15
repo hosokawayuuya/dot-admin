@@ -22,27 +22,31 @@ require '../others/db-connect.php';
     <h1><span class="blue">&lt;</span>一覧<span class="blue">&gt;</span> <span class="yellow">勇者はこちら</span></h1>
     <h2>Created by <a href="https://github.com/pablorgarcia" target="_blank">dot admin</a></h2>
 
-    <table class="container">
-        <thead>
-            <tr>
-                <th><h1>名前</h1></th>
-                <th><h1>レベル</h1></th>
-                <th><h1>役職</h1></th>
-                <th><h1>役割</h1></th>
-                <th><h1>特徴</h1></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $user) : ?>
+    <form action="../G1-6/update-input.php" method="post">
+        <table class="container">
+            <thead>
                 <tr>
-                    <td><?php echo htmlspecialchars($user['user_name']); ?></td>
-                    <td><?php echo htmlspecialchars($user['level']); ?></td>
-                    <td><?php echo htmlspecialchars($user['post_name']); ?></td>
-                    <td><?php echo htmlspecialchars($user['role']); ?></td>
-                    <td><?php echo htmlspecialchars($user['features']); ?></td>
+                    <th><h1>名前</h1></th>
+                    <th><h1>レベル</h1></th>
+                    <th><h1>役職</h1></th>
+                    <th><h1>役割</h1></th>
+                    <th><h1>特徴</h1></th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <button type="button" onclick="history.back()">戻る</button>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user) : ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($user['user_name']); ?></td>
+                        <td><?php echo htmlspecialchars($user['level']); ?></td>
+                        <td><?php echo htmlspecialchars($user['post_name']); ?></td>
+                        <td><?php echo htmlspecialchars($user['role']); ?></td>
+                        <td><?php echo htmlspecialchars($user['features']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <div style="text-align: center">
+            <button type="button" onclick="history.back()">戻る</button>
+        </div>
+    </form>
 <?php require '../others/footer.php'; ?>
