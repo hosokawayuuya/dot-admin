@@ -1,3 +1,58 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>ドット管理者</title>
+    <link rel='stylesheet' href='style.css'>
+    <script src='script.js'></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #e0d4b7;
+            margin: 0;
+            padding: 0;
+            background-image: url('map_background.jpg'); /* ふるい地図風の背景画像 */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            color: #1a1a1a;
+        }
+
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #705539;
+            border: 1px solid #705539;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        a:hover {
+            background-color: #543d2b;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
 <?php
 require '../others/db-connect.php';
 
@@ -59,10 +114,10 @@ try {
 
         echo "更新が完了しました。<br>";
 
-        echo "<p>変更後のユーザー名: " . htmlspecialchars($new_user_name) . "</p>";
-        echo "<p>変更後のポスト名: " . htmlspecialchars($new_post_info['post_name']) . "</p>";
+        echo "<p>変更後の勇者名: " . htmlspecialchars($new_user_name) . "</p>";
+        echo "<p>変更後の役職: " . htmlspecialchars($new_post_info['post_name']) . "</p>";
 
-        echo "<br><a href='update.php'>ホームに戻る</a>";
+        echo "<br><a href='update.php'>更新画面に戻る</a>";
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -70,3 +125,6 @@ try {
     $pdo = null; // データベース接続解除
 }
 ?>
+
+</body>
+</html>

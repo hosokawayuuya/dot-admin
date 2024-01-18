@@ -1,0 +1,37 @@
+body {
+    background-image: url('volcano.jpg'); /* ご自身の火山テーマの背景画像へのパスに置き換えてください */
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #ffffff; /* ダークな背景に対してテキストの色を白に設定 */
+    font-family: 'Arial', sans-serif; /* フォントをArialまたはサンセリフに設定 */
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    color: #ffcc00; /* 見出しの色を黄色に設定 */
+}
+
+p {
+    color: #ffffff; /* 段落のテキスト色を白に設定 */
+}
+
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #ffcc00; /* ボタンの背景色を黄色に設定 */
+    color: #000000; /* ボタンのテキスト色を黒に設定 */
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none; /* ボーダーをなしに設定 */
+}
+
+a {
+    margin-top: 20px;
+    color: #ffcc00; /* リンクのテキスト色を黄色に設定 */
+    text-decoration: none; /* リンクの下線をなしに設定 */
+}

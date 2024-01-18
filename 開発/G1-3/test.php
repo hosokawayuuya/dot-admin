@@ -32,6 +32,14 @@ if (isset($_GET['user_name']) && isset($_GET['post_name'])) {
 
 // 削除確認画面を表示
 ?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User情報削除</title>
+</head>
+<body>
     <h2>User情報削除確認</h2>
     <?php if (isset($user_data) && !empty($user_data)): ?>
         <p>以下のユーザー情報を削除しますか？</p>
@@ -47,4 +55,5 @@ if (isset($_GET['user_name']) && isset($_GET['post_name'])) {
         <p>ユーザー情報が見つかりません。</p>
     <?php endif; ?>
     <a href="../G1-6/update.php">戻る</a>
-<?php require '../others/footer.php'; ?>
+</body>
+</html>

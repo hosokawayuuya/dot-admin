@@ -1,33 +1,52 @@
 <?php
-    $pdo=new PDO($connect, USER, PASS);
-    $sql=$pdo->prepare('insert into User(user_name, post_name, guild_name) values (?, ?, ?)');
-    if(empty($_POST['user_name'])){
-        echo '名前を入力してください。';
-    }else if(empty($_POST['post_name'])){
-        echo '説明文を入力してください。';
-    }else if(empty($_POST['guild_name'])){
-      echo 'ギルド名を入力してください。';
-    }else if($sql->execute([ $_POST['user_name'], $_POST['post_name'],$_POST['guild_name'] ]) ) {
-        echo '<font color="red">追加に成功しました。</font>';
-    }else{
-        echo '<font color="red">追加に失敗しました。</font>';
-    }
-?>
-    <br><hr><br>
-    <table class="design">
-      <tr>
-        <th>名前</th>
-        <th>役職</th>
-        <th>ギルド名</th>
-      </tr>
-      <?php
-        foreach ($pdo->query( 'select * from User') as $row){
-          echo '<tr>';
-          echo '<td>',$row['user_name'],'</td>';
-          echo '<td>',$row['post_name'],'</td>';
-          echo '<td>',$row['guild_name'],'</td>';
-          echo '</tr>';
-          echo "\n";
+require '../others/header.php';
+require '../others/menu.php';
+require '../others/db-connect.php';
+
+// エラーメッセージの初期化
+$errors = [];
+
+// フォームが送信された場合の処理
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    // GETリクエストからデータを取得
+    $user_name = $_GET['user_name'];
+    $post_name = $_GET['post_name'];
+    $guild_name = isset($_GET['guild_name']) ? $_GET['guild_name'] : null;
+
+    // 入力内容の確認
+    echo "<h2>勇者登録完了</h2>";
+    echo "<p1>ユーザー名: " . htmlspecialchars($user_name) . "</p1>";
+    echo "<br>";
+    echo "<p1>ポスト名: " . htmlspecialchars($post_name) . "</p1>";
+    echo "<br>";
+
+    // ギルド名が存在する場合のみ表示
+    if ($guild_name !== null) {
+        echo "<p1>ギルド名: " . htmlspecialchars($guild_name) . "</p1>";
+        echo "<br>";
+
+        // データベースに挿入
+        try {
+            $pdo = new PDO($connect, USER, PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // User テーブルにデータを挿入
+            $stmt = $pdo->prepare("INSERT INTO User (user_name, post_id, guild_id) VALUES (:user_name, (SELECT post_id FROM Post WHERE post_name = :post_name), (SELECT guild_id FROM Guild WHERE guild_name = :guild_name))");
+            $stmt->bindParam(':user_name', $user_name, PDO::PARAM_STR);
+            $stmt->bindParam(':post_name', $post_name, PDO::PARAM_STR);
+            $stmt->bindParam(':guild_name', $guild_name, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "データベースエラー: " . $e->getMessage();
+        } finally {
+            $pdo = null; // データベース接続解除
         }
-      ?>
-    </table>
+    }
+
+    echo "<p1>登録が完了しました。</p1>";
+    echo "<br>";
+    echo "<a href='signup-input.php'>新規登録画面へ</a>";
+}
+
+require '../others/footer.php';
+?>

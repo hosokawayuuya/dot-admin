@@ -2,7 +2,12 @@
 require '../others/header.php';
 require '../others/menu.php';
 require '../others/db-connect.php';
-
+?>
+<audio loop autoplay>
+  <source src="korezo-machi.mp3" type="audio/mp3">
+  ブラウザがオーディオタグをサポートしていません。
+</audio>
+<?php
     try {
         $pdo = new PDO($connect, USER, PASS);
         $sql = $pdo->prepare('
@@ -19,8 +24,7 @@ require '../others/db-connect.php';
     }
     ?>
 
-    <h1><span class="blue">&lt;</span>一覧<span class="blue">&gt;</span> <span class="yellow">勇者はこちら</span></h1>
-    <h2>Created by <a href="https://github.com/pablorgarcia" target="_blank">dot admin</a></h2>
+    <h1><span class="yellow">[一覧]勇者はこちら</span></h1>
 
     <form action="../G1-6/update-input.php" method="post">
         <table class="container">
