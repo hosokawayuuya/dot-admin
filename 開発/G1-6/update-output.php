@@ -53,6 +53,14 @@
 </head>
 <body>
 
+<audio id="levelUpSound">
+    <source src="レベルアップ.mp3" type="audio/mp3">
+</audio>
+
+<audio id="stairsSound">
+    <source src="stairs-free3.mp3" type="audio/mp3">
+</audio>
+
 <?php
 require '../others/db-connect.php';
 
@@ -76,12 +84,6 @@ try {
     if ($user_count > 0) {
         echo "Error: 新しいユーザー名が既に存在します。別のユーザー名を選択してください。<a href='update.php'>ホームに戻る</a>";
     } else {
-        // 変更前のユーザー情報を取得
-        $old_user_info_sql = "SELECT * FROM User WHERE user_name=:old_user_name";
-        $old_user_info_stmt = $pdo->prepare($old_user_info_sql);
-        $old_user_info_stmt->bindParam(':old_user_name', $old_user_name, PDO::PARAM_STR);
-        $old_user_info_stmt->execute();
-        $old_user_info = $old_user_info_stmt->fetch(PDO::FETCH_ASSOC);
 
         // ユーザーテーブルのユーザー名変更
         $update_user_sql = "UPDATE User SET user_name=:new_user_name, post_id=:new_post_id WHERE user_name=:old_user_name";
@@ -98,13 +100,6 @@ try {
         $new_user_info_stmt->execute();
         $new_user_info = $new_user_info_stmt->fetch(PDO::FETCH_ASSOC);
 
-        // 変更前のポスト名を取得
-        $old_post_info_sql = "SELECT Post.post_name FROM Post WHERE Post.post_id = (SELECT post_id FROM User WHERE user_name = :old_user_name)";
-        $old_post_info_stmt = $pdo->prepare($old_post_info_sql);
-        $old_post_info_stmt->bindParam(':old_user_name', $old_user_name, PDO::PARAM_STR);
-        $old_post_info_stmt->execute();
-        $old_post_info = $old_post_info_stmt->fetch(PDO::FETCH_ASSOC);
-
         // 変更後のポスト名を取得
         $new_post_info_sql = "SELECT Post.post_name FROM Post WHERE Post.post_id = :new_post_id";
         $new_post_info_stmt = $pdo->prepare($new_post_info_sql);
@@ -112,10 +107,26 @@ try {
         $new_post_info_stmt->execute();
         $new_post_info = $new_post_info_stmt->fetch(PDO::FETCH_ASSOC);
 
+        // ギルドの更新処理
+        $new_guild_id = $_POST['new_guild_id'];
+        $update_guild_sql = "UPDATE User SET guild_id=:new_guild_id WHERE user_name=:new_user_name";
+        $update_guild_stmt = $pdo->prepare($update_guild_sql);
+        $update_guild_stmt->bindParam(':new_guild_id', $new_guild_id, PDO::PARAM_INT);
+        $update_guild_stmt->bindParam(':new_user_name', $new_user_name, PDO::PARAM_STR);
+        $update_guild_stmt->execute();
+
+        // 変更後のギルド情報を取得
+        $new_guild_info_sql = "SELECT guild_name FROM Guild WHERE guild_id=:new_guild_id";
+        $new_guild_info_stmt = $pdo->prepare($new_guild_info_sql);
+        $new_guild_info_stmt->bindParam(':new_guild_id', $new_guild_id, PDO::PARAM_INT);
+        $new_guild_info_stmt->execute();
+        $new_guild_info = $new_guild_info_stmt->fetch(PDO::FETCH_ASSOC);
+
         echo "更新が完了しました。<br>";
 
         echo "<p>変更後の勇者名: " . htmlspecialchars($new_user_name) . "</p>";
         echo "<p>変更後の役職: " . htmlspecialchars($new_post_info['post_name']) . "</p>";
+        echo "<p>変更後のギルド名: " . htmlspecialchars($new_guild_info['guild_name']) . "</p>";
 
         echo "<br><a href='update.php'>更新画面に戻る</a>";
     }
@@ -124,6 +135,28 @@ try {
 } finally {
     $pdo = null; // データベース接続解除
 }
+echo "<script>
+    // 画面が開いたときに効果音を鳴らす
+    window.onload = function() {
+        var levelUpSound = document.getElementById('levelUpSound');
+        levelUpSound.play();
+    };
+
+    // 更新画面へ戻るボタンが押された時の処理
+    function redirectToUpdatePage() {
+        var stairsSound = document.getElementById('stairsSound');
+        stairsSound.play()
+            .catch(error => {
+                console.error('Error playing stairs sound:', error);
+            });
+    
+        // 1秒待ってから画面遷移
+        setTimeout(function() {
+            window.location.href = 'update.php';
+        }, 1000);
+    }
+    
+</script>";
 ?>
 
 </body>

@@ -200,11 +200,6 @@ require '../others/menu.php';
 
 <div id="quest-board">
   <h2 style="text-align: center; color: #1a1a1a;">冒険者ギルド掲示板</h2>
-
-  <ul id="quest-list">
-    <!-- Quests will be dynamically added here -->
-  </ul>
-
   <div id="add-quest-form">
     <h3 style="color: #1a1a1a;">新しいギルドを追加</h3>
     <form method="post" action="">

@@ -22,7 +22,7 @@
   </p>
   <!-- ボタンに変更 -->
   <p>
-    <button id="home-button">ホーム画面へ</button>
+    <button id="home-button">一覧画面へ</button>
   </p>
 </div>
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>

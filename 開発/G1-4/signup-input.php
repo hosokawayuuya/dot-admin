@@ -1,5 +1,5 @@
 <?php
-
+require '../others/db-connect.php';
 // エラーメッセージの初期化
 $errors = [];
 
@@ -17,6 +17,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // エラーがなければ次のページにリダイレクト
     if (empty($errors)) {
+        // ギルド名が存在しない場合、新規にギルドを登録
+        try {
+            $pdo = new PDO($connect, USER, PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare("INSERT INTO Guild (guild_name) VALUES (:guild_name)");
+            $stmt->bindParam(':guild_name', $guild_name, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "データベースエラー: " . $e->getMessage();
+        } finally {
+            $pdo = null; // データベース接続解除
+        }
+
+        // ユーザー情報を登録するページにリダイレクト
         header("Location: signup-output.php?user_name=$user_name&post_name=$post_name&guild_name=$guild_name");
         exit();
     }
@@ -24,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 require '../others/header.php';
 require '../others/menu.php';
-require '../others/db-connect.php';
 
 // ユーザー名、ポスト名の選択肢を取得するためのクエリ
 try {
